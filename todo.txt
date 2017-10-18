@@ -1,0 +1,2 @@
+Instead of filling up the whole box before trying if it happens to
+be a magic box, check after each new row and column is added.

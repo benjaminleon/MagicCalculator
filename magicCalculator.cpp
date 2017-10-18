@@ -10,7 +10,6 @@ using std::endl;
 
 int main()
 {
-
     Puzzle puzzle = Puzzle();
     puzzle.setup();
 
