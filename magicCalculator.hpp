@@ -19,12 +19,9 @@ public:
     bool checkBox() const;
     int foundCount;
     int triedCount;
-    void setup();
-    std::set<int> numbers;
 
 private:
-    bool checkRow(int idx) const;
+    bool checkRowOk(int idx) const;
     bool checkCol(int idx) const;
     bool checkDiag(diagEnum orientation) const;
-    bool done;
 };

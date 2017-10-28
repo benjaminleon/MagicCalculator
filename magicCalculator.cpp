@@ -11,59 +11,59 @@ using std::endl;
 int main()
 {
     Puzzle puzzle = Puzzle();
-    puzzle.setup();
 
-    // Recursively
-    puzzle.fillBoxWith(puzzle.numbers);
+    std::set<int> numbers;
+    for (int i = 1; i <= BOX_SIZE * BOX_SIZE; i++)
+    {
+        numbers.insert(i);
+    }
+
+    puzzle.fillBoxWith(numbers);
     cout << "Tried " << puzzle.triedCount << " combinations" << endl;
     cout << "Found " << puzzle.foundCount << " solutions" << endl;
 
     return 0;
 }
 
-void Puzzle::setup()
-{
-    for (int i = 1; i <= BOX_SIZE * BOX_SIZE; i++)
-    {
-        numbers.insert(i);
-    }
-}
-
-Puzzle::Puzzle() : done(false), foundCount(0), triedCount(0)
+Puzzle::Puzzle() : foundCount(0), triedCount(0)
 {
     box = std::vector<int>(BOX_SIZE * BOX_SIZE);
 }
 
 void Puzzle::fillBoxWith(std::set<int> availableNumbers)
 {
-    if (availableNumbers.empty())
-    {
-        triedCount++;
-        if (checkBox())
-        {
-            foundCount++;
-            display();
-            return;
-        }
-    }
-
     int occupiedCount = BOX_SIZE * BOX_SIZE - availableNumbers.size();
 
     for (const int number : availableNumbers)
     {
         box[occupiedCount] = number;
+        triedCount++;
+
+        bool rowWasFilled = (occupiedCount + 1) % BOX_SIZE == 0; // +1 because we added 1
+        if (rowWasFilled)
+        {
+            int filledRowsIdx = occupiedCount / BOX_SIZE;
+            if (!checkRowOk(filledRowsIdx))
+            {
+                continue; // try to add another number
+            }
+        }
 
         std::set<int> remainingNumbers(availableNumbers);
         remainingNumbers.erase(number);
-
-        fillBoxWith(remainingNumbers);
-        if (done)
+        if (remainingNumbers.empty())
         {
+            if(checkBox())
+            {
+                foundCount++;
+                display();
+            }
             return;
         }
-
-        box[occupiedCount] = 0;
-        remainingNumbers.insert(number);
+        else
+        {
+            fillBoxWith(remainingNumbers);
+        }
     }
 }
 
@@ -87,7 +87,7 @@ bool Puzzle::checkBox() const
 
     for (int i = 0; i < BOX_SIZE; i++)
     {
-        isMagic *= checkRow(i);
+        isMagic *= checkRowOk(i);
         isMagic *= checkCol(i);
 
     }
@@ -107,7 +107,7 @@ bool Puzzle::checkCol(int idx) const
     return sum == MAGIC_NUMBER;
 }
 
-bool Puzzle::checkRow(int idx) const
+bool Puzzle::checkRowOk(int idx) const
 {
     int sum = 0;
     for (int i = 0; i < BOX_SIZE; i++)
