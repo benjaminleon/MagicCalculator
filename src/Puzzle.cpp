@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "Puzzle.hpp"
+#include "../inc/Puzzle.hpp"
 
 using std::cout;
 using std::endl;
