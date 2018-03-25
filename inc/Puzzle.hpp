@@ -20,6 +20,7 @@ public:
     bool checkBox() const;
     int foundCount;
     int triedCount;
+    bool printSolution;
 
 private:
     bool checkRowOk(int idx) const;

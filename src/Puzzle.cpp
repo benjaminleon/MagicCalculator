@@ -7,7 +7,7 @@
 using std::cout;
 using std::endl;
 
-Puzzle::Puzzle() : foundCount(0), triedCount(0)
+Puzzle::Puzzle() : foundCount(0), triedCount(0), printSolution(0)
 {
     box = std::vector<int>(BOX_SIZE * BOX_SIZE);
 }
@@ -38,7 +38,10 @@ void Puzzle::fillBoxWith(std::set<int> availableNumbers)
             if(checkBox())
             {
                 foundCount++;
-                display();
+                if (printSolution)
+                {
+                    display();
+                }
             }
             return;
         }

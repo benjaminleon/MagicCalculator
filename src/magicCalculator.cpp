@@ -1,8 +1,9 @@
+#include <iomanip>
 #include <iostream>
 #include <set>
-#include "magicCalculator.hpp"
-#include <iomanip>
-#include "Puzzle.hpp"
+
+#include "../inc/magicCalculator.hpp"
+#include "../inc/Puzzle.hpp"
 
 using std::cout;
 using std::endl;
@@ -16,6 +17,8 @@ int main()
     {
         numbers.insert(i);
     }
+
+    puzzle.printSolution = true;
 
     puzzle.fillBoxWith(numbers);
     cout << "Tried " << puzzle.triedCount << " combinations" << endl;
